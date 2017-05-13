@@ -2,7 +2,7 @@
 
 ## 注意事项
 ```json
-服务器地址：https://house.wvovo.com
+服务器地址：https://house.ruanzhijun.cn
 ```
 
 ## 请求方式
