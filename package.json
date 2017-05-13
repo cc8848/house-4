@@ -8,6 +8,7 @@
     "test": "npm run compile && nyc --reporter=text --reporter=text-summary --exclude=**/thinkjs/** --exclude=**/test/** --exclude=**/stress/** ava --no-color --no-cache -c 4 -v -s ./test"
   },
   "dependencies": {
+    "axios": "^0.16.1",
     "babel-eslint": "^7.2.2",
     "babel-runtime": "6.x.x",
     "bluebird": "^3.5.0",
@@ -20,7 +21,6 @@
     "log4js": "^1.1.1",
     "moment": "^2.18.1",
     "mongoose": "^4.9.5",
-    "request": "^2.81.0",
     "source-map-support": "0.4.0",
     "thinkjs": "^2.2.15"
   },

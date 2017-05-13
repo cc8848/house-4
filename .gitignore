@@ -39,3 +39,5 @@ output.tar.gz
 /app/
 
 runtime/
+
+yarn.lock
