@@ -18,24 +18,30 @@ module.exports = {
     }
     try {
       let pathtmp = '';
-      const dirpathArray = dirpath.split(path.sep).filter(v => !think.isEmpty(v)).map(v => toString(v));
+      const dirpathArray = dirpath.split(path.sep).filter((v) => {
+        const b = !think.isEmpty(v);
+        return b;
+      }).map((v) => {
+        const str = toString(v);
+        return str;
+      });
 
       // 处理windows盘符的问题
       if (isWindows) {
         const tmp = dirpathArray.shift();
         dirpathArray[0] = `${tmp}${path.sep}${dirpathArray[0]}`;
       }
-      for (const dirname of dirpathArray) {
+      dirpathArray.filter((dirname) => {
         if (!think.isEmpty(pathtmp)) {
           pathtmp = path.join(pathtmp, dirname);
         } else {
           pathtmp = isWindows ? dirname : `/${dirname}`;
         }
-        if (fs.existsSync(pathtmp)) {
-          continue;
+        if (!fs.existsSync(pathtmp)) {
+          fs.mkdirSync(pathtmp);
         }
-        fs.mkdirSync(pathtmp);
-      }
+        return true;
+      });
       return true;
     } catch (e) {
       return false;
@@ -43,21 +49,22 @@ module.exports = {
   },
   /**
    * 删除文件夹
-   * @param path 文件夹路径
+   * @param dir 文件夹路径
    */
-  rmdirSync(path) {
+  rmdirSync(dir) {
     let files = [];
-    if (fs.existsSync(path)) {
-      files = fs.readdirSync(path);
-      for (const file of files) {
-        const curPath = `${path}/${file}`;
+    if (fs.existsSync(dir)) {
+      files = fs.readdirSync(dir);
+      files.filter((file) => {
+        const curPath = `${dir}/${file}`;
         if (fs.statSync(curPath).isDirectory()) { // recurse
           this.rmdirSync(curPath);
         } else { // delete file
           fs.unlinkSync(curPath);
         }
-      }
-      fs.rmdirSync(path);
+        return true;
+      });
+      fs.rmdirSync(dir);
     }
   },
   /**

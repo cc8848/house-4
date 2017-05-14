@@ -1,4 +1,5 @@
 global.mongodb = require('mongoose');
+
 mongodb.Promise = global.Promise;
 const config = think.config('mongodb');
 const LOG = getLogger(__filename);
@@ -30,5 +31,5 @@ mongodb.connection.on('error', (err) => {
   process.exit(1);
 });
 mongodb.connection.on('disconnected', () => {
-  console.log('disconnected');
+  LOG.warn('disconnected');
 });

@@ -8,5 +8,6 @@ module.exports = {
     pass: 'house',
     database: 'house',
   },
+  crawlerRandom: { min: 1000, max: 1000 },
   port: 12345,
 };

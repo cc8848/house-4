@@ -1,8 +1,15 @@
 const Base = think.service('base', 'common');
-class store extends Base {
+class anjuke extends Base {
   // 最先执行
   init(...args) {
     super.init(...args);
+  }
+
+  /**
+   * 爬虫入口
+   */
+  crawler() {
+    this.LOG.warn('安居客。。。安居客。。。安居客。。。');
   }
 
   show() {
@@ -10,4 +17,4 @@ class store extends Base {
     fang.save({ xxx: 1, tttt: 43 });
   }
 }
-module.exports = store;
+module.exports = anjuke;

@@ -1,6 +1,7 @@
 // 本地环境
 const Thinkjs = require('thinkjs');
 const path = require('path');
+
 const rootPath = path.dirname(__dirname);
 const instance = new Thinkjs({
   APP_PATH: `${rootPath + path.sep}src`,

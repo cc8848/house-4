@@ -2,6 +2,7 @@ const path = require('path');
 const Thinkjs = require('thinkjs');
 const http = require('http');
 const log4js = require('log4js');
+
 const req = new http.IncomingMessage();
 req.headers = {
   'x-real-ip': '127.0.0.1',
@@ -35,31 +36,30 @@ const instance = new Thinkjs({
 instance.load();
 
 function camelCase(str) {
-  if (str.indexOf('_') > -1) {
-    str = str.replace(/_(\w)/g, (a, b) => {
-      return b.toUpperCase();
-    });
+  let _str = str;
+  if (_str.indexOf('_') > -1) {
+    _str = _str.replace(/_(\w)/g, (a, b) => b.toUpperCase());
   }
-  return str;
+  return _str;
 }
 
 /**
  * 全局切换日志频道
- * @param category 日志频道(建议传当前文件名)
+ * @param channel 日志频道(建议传当前文件名)
  */
-module.exports.getTestLogger = function (category = 'console') {
-  category = category.replace(__filename.replace('_http.js', ''), '').replace('.js', '');
-  let tmp = category.split(path.sep);
-  let module = camelCase(tmp.join('.'));
-  let logger = log4js.getLogger(`test.${module}`);
+module.exports.getTestLogger = function (channel = 'console') {
+  const category = channel.replace(__filename.replace('_http.js', ''), '').replace('.js', '');
+  const tmp = category.split(path.sep);
+  const module = camelCase(tmp.join('.'));
+  const logger = log4js.getLogger(`test.${module}`);
   logger.setLevel('ALL');
   return logger;
 };
 
-async function invoke(http) {
+async function invoke(_http) {
   try {
-    let Controller = think.lookClass(http.url.substr(1, http.url.lastIndexOf('/') - 1), 'controller');
-    let controller = new Controller(http);
+    const Controller = think.lookClass(_http.url.substr(1, _http.url.lastIndexOf('/') - 1), 'controller');
+    const controller = new Controller(_http);
 
     // 一定要重写controller.json方法,success才能拿到data;error还是拿不到data.(拿不到data的原因是获取不了语言包)
     controller.json = function (data) {
@@ -67,14 +67,14 @@ async function invoke(http) {
     };
 
     // 因为单元测试里think不会解析这三个值，所以提前赋值给它们
-    think.extend(http, {module: http.url.split('/')[1]});
-    think.extend(http, {controller: http.url.split('/')[2]});
-    think.extend(http, {action: http.url.split('/')[3]});
+    think.extend(_http, { module: _http.url.split('/')[1] });
+    think.extend(_http, { controller: _http.url.split('/')[2] });
+    think.extend(_http, { action: _http.url.split('/')[3] });
 
     // 因为单元测试里think不会自动执行aop，所以手动帮它执行
     await controller.__before();
 
-    let data = await controller[`${http.url.substr(http.url.lastIndexOf('/') + 1)}Action`]();
+    const data = await controller[`${_http.url.substr(_http.url.lastIndexOf('/') + 1)}Action`]();
     if (data.code === 1) {
       return data.object;
     }
@@ -83,21 +83,19 @@ async function invoke(http) {
     if (think.isPrevent(err)) {
       return {};
     }
-    return {code: -1};
+    return { code: -1 };
   }
 }
 
 async function login() {
-  let param = {
+  const param = {
     passport: '15919630721',
     password: 'ruanzhijun',
   };
-  let url = '/oauth/member/loginbypassport';
-  let http = await think.http(think.extend({}, req, {url}), think.extend({}, res)).then(async (http) => {
-    return think.extend(http, {_config: {}}, {method: 'POST'}, {_post: param});
-  });
+  const url = '/oauth/member/loginbypassport';
+  const _http = await think.http(think.extend({}, req, { url }), think.extend({}, res)).then(async __http => think.extend(__http, { _config: {} }, { method: 'POST' }, { _post: param }));
 
-  let data = await invoke(http);
+  const data = await invoke(_http);
   return data.token;
 }
 
@@ -106,9 +104,10 @@ async function login() {
  */
 module.exports.post = async function (url, data = {}) {
   req.headers.token = whiteList.has(url) ? '' : await login();
-  return think.http(think.extend({}, req, {url}), think.extend({}, res)).then(async (http) => {
-    http = think.extend(http, {_config: {}}, {method: 'POST'}, {_post: data});
-    return await invoke(http);
+  return think.http(think.extend({}, req, { url }), think.extend({}, res)).then(async (_http) => {
+    const __http = think.extend(_http, { _config: {} }, { method: 'POST' }, { _post: data });
+    const result = await invoke(__http);
+    return result;
   });
 };
 
@@ -117,9 +116,10 @@ module.exports.post = async function (url, data = {}) {
  */
 module.exports.get = async function (url, data = {}) {
   req.headers.token = await login();
-  return think.http(think.extend({}, req, {url}), think.extend({}, res)).then(async (http) => {
-    http = think.extend(http, {_config: {}}, {method: 'GET'}, {_get: data});
-    return await invoke(http);
+  return think.http(think.extend({}, req, { url }), think.extend({}, res)).then(async (_http) => {
+    const __http = think.extend(_http, { _config: {} }, { method: 'GET' }, { _get: data });
+    const result = await invoke(__http);
+    return result;
   });
 };
 
@@ -128,9 +128,10 @@ module.exports.get = async function (url, data = {}) {
  */
 module.exports.put = async function (url, data = {}) {
   req.headers.token = await login();
-  return think.http(think.extend({}, req, {url}), think.extend({}, res)).then(async (http) => {
-    http = think.extend(http, {_config: {}}, {method: 'PUT'}, {_put: data});
-    return await invoke(http);
+  return think.http(think.extend({}, req, { url }), think.extend({}, res)).then(async (_http) => {
+    const __http = think.extend(_http, { _config: {} }, { method: 'PUT' }, { _put: data });
+    const result = await invoke(__http);
+    return result;
   });
 };
 
@@ -139,9 +140,10 @@ module.exports.put = async function (url, data = {}) {
  */
 module.exports.delete = async function (url, data = {}) {
   req.headers.token = await login();
-  return think.http(think.extend({}, req, {url}), think.extend({}, res)).then(async (http) => {
-    http = think.extend(http, {_config: {}}, {method: 'DELETE'}, {_delete: data});
-    return await invoke(http);
+  return think.http(think.extend({}, req, { url }), think.extend({}, res)).then(async (_http) => {
+    const __http = think.extend(_http, { _config: {} }, { method: 'DELETE' }, { _delete: data });
+    const result = await invoke(__http);
+    return result;
   });
 };
 
@@ -149,6 +151,6 @@ module.exports.delete = async function (url, data = {}) {
  * new一个service
  */
 module.exports.service = function (name, module) {
-  let Service = think.service(name, module);
+  const Service = think.service(name, module);
   return new Service();
 };

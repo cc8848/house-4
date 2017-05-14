@@ -35,12 +35,13 @@ module.exports = {
    * @returns {String} 返回类型:base64
    */
   des3Encrypt(data, key) {
-    if (key.length > 24) {
-      key = key.substring(0, 24);
+    let encryptKey = key;
+    if (encryptKey.length > 24) {
+      encryptKey = encryptKey.substring(0, 24);
     } else {
       throw new Error('Wrong key size');
     }
-    const cipher = crypto.createCipheriv('des-ede3', new Buffer(key), new Buffer(0));
+    const cipher = crypto.createCipheriv('des-ede3', new Buffer(encryptKey), new Buffer(0));
     return cipher.update(data, 'utf8', 'base64') + cipher.final('base64');
   },
 
@@ -51,12 +52,13 @@ module.exports = {
    * @returns {String} 返回类型:utf8
    */
   des3Decrypt(data, key) {
-    if (key.length > 24) {
-      key = key.substring(0, 24);
+    let decrypt = key;
+    if (decrypt.length > 24) {
+      decrypt = decrypt.substring(0, 24);
     } else {
       throw new Error('Wrong key size');
     }
-    const decipher = crypto.createDecipheriv('des-ede3', new Buffer(key), new Buffer(0));
+    const decipher = crypto.createDecipheriv('des-ede3', new Buffer(decrypt), new Buffer(0));
     return decipher.update(data, 'base64', 'utf8') + decipher.final('utf8');
   },
   /**

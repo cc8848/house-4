@@ -2,6 +2,7 @@
  * model基类
  */
 const path = require('path');
+
 class base extends think.model.base {
   // 最先执行
   init(...args) {

@@ -8,14 +8,14 @@ const logconfig = think.config('log4js');
 if (!fs.existsSync(logconfig.customBaseDir)) {
   think.mkdir(logconfig.customBaseDir);
 }
-for (const v of logconfig.appenders) {
+logconfig.appenders.filter((v) => {
   if (v.filename && !fs.existsSync(v.filename)) {
     think.mkdir(v.filename);
   }
-}
+  return true;
+});
 log4js.configure(logconfig);
 log4js.loadAppender('categoryFilter');
-// log4js.getLogger('console');
 /** 切换日志频道 不影响写日志操作
  level:
  ALL

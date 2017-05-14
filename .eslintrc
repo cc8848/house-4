@@ -42,6 +42,18 @@
       {
         "max": 3
       }
+    ],
+    "no-underscore-dangle": [
+      "off"
+    ],
+    "import/no-dynamic-require": [
+      "off"
+    ],
+    "global-require": [
+      "off"
+    ],
+    "class-methods-use-this": [
+      "off"
     ]
   }
 }

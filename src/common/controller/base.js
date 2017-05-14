@@ -54,9 +54,8 @@ class base extends think.controller.base {
    * @param expiresIn 过期时间(单位：秒)
    */
   async encryptToken(data, expiresIn = config.expire) {
-    data = data || {};
-    data.env = config.env;// token环境隔离
-    return await jwt.sign(data, privateCert, { algorithm: 'RS256', expiresIn });
+    const sign = await jwt.sign(data, privateCert, { algorithm: 'RS256', expiresIn });
+    return sign;
   }
 
   /**
@@ -87,17 +86,18 @@ class base extends think.controller.base {
    */
   cursorPage(list = [], moreItem = {}, sequenceField, lastSequence = 0) {
     const pageSize = this.pageSize();
-
-    if (lastSequence === 0 && list.length >= pageSize) {
-      list.length -= 1;
-      const obj = list[list.length - 1];
+    const _list = list;
+    let _lastSequence = lastSequence;
+    if (_lastSequence === 0 && _list.length >= pageSize) {
+      _list.length -= 1;
+      const obj = _list[_list.length - 1];
       if (think.isEmpty(obj[sequenceField])) {
         throw new Error(`missing 'sequence' field, sequenceField :${sequenceField}`);
       }
-      lastSequence = toNumber(obj[sequenceField]) || 0;
+      _lastSequence = toNumber(obj[sequenceField]) || 0;
     }
 
-    const format = { lastSequence, pageSize: list.length, list };
+    const format = { _lastSequence, pageSize: _list.length, _list };
     think.extend(format, moreItem);
     return this.success(format);
   }
@@ -143,9 +143,9 @@ class base extends think.controller.base {
    * @param size
    */
   getSize(size) {
-    const sizes = new Array('Byte', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+    const sizes = ['Byte', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     const i = toInteger(Math.floor(Math.log(size) / Math.log(1024)));
-    return `${Math.floor(size / Math.pow(1024, i))} ${sizes[i]}`;
+    return `${Math.floor(size / (1024 ** i))} ${sizes[i]}`;
   }
 }
 

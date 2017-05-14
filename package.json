@@ -2,9 +2,10 @@
   "name": "house",
   "description": "powered by ruanzhijun",
   "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
     "start": "npm run eslint && node www/development.js",
-    "eslint": "eslint src/ --fix && eslint test/ --fix && eslint www/ --fix",
+    "eslint": "eslint src/ && eslint test/ && eslint www/",
     "test": "npm run compile && nyc --reporter=text --reporter=text-summary --exclude=**/thinkjs/** --exclude=**/test/** --exclude=**/stress/** ava --no-color --no-cache -c 4 -v -s ./test"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "moment": "^2.18.1",
     "mongoose": "^4.9.5",
     "source-map-support": "0.4.0",
+    "stream": "0.0.2",
     "thinkjs": "^2.2.15"
   },
   "devDependencies": {
@@ -34,7 +36,5 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3"
-  },
-  "repository": "",
-  "license": "MIT"
+  }
 }

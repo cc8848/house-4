@@ -11,10 +11,10 @@ const commonpath = think.getPath('common', '');
 /**
  * 获取全局工具
  * @param plugins 工具类型 or mazing 的工具
- * @param path common的文件夹
+ * @param dir common的文件夹
  */
-global.requireCommon = function (plugins, path = 'utils') {
-  return require(`${commonpath}${path}/${plugins}`) || null;
+global.requireCommon = function (plugins, dir = 'utils') {
+  return require(`${commonpath}${dir}/${plugins}`) || null;
 };
 /**
  * 集群队列执行模式
@@ -34,8 +34,7 @@ global.ClusterQueue = function (cb) {
  * 全局获取当前时间
  */
 global.getCurrentTime = function (format) {
-  format = format || 'YYYY-MM-DD HH:mm:ss';
-  return moment().format(format);
+  return moment().format(format || 'YYYY-MM-DD HH:mm:ss');
 };
 
 /**
@@ -84,19 +83,19 @@ global.requireBaseModel = function () {
 /**
  * 获取模块model
  * @param plugins model名
+ * @param dir 模块的文件夹
  */
-global.requireModel = function (plugins, path) {
-  path = think.getPath(path, '');
-  return require(`${path}model/${plugins}`) || null;
+global.requireModel = function (plugins, dir) {
+  return require(`${think.getPath(dir, '')}model/${plugins}`) || null;
 };
 
 /**
  * 全局切换日志频道
- * @param category 日志频道(建议传当前文件名)
+ * @param channel 日志频道(建议传当前文件名)
  */
 const log4js = requireCommon('log4js', 'utils');
-global.getLogger = function (category = 'console') {
-  category = category.replace(think.APP_PATH, '').replace('.js', '').trim();
+global.getLogger = function (channel = 'console') {
+  const category = channel.replace(think.APP_PATH, '').replace('.js', '').trim();
   const tmp = category.split(path.sep).filter(item => !think.isEmpty(item));
   const logger = log4js.getLogger(think.camelCase(tmp.join('.')));
   logger.setLevel(think.config('log_level'));
@@ -104,5 +103,5 @@ global.getLogger = function (category = 'console') {
 };
 
 // 自动加载depend文件夹里面的文件
-const dependDir = path.resolve(`${__dirname}/../depend`);
-fs.readdirSync(dependDir).filter(v => v.indexOf('.js') > -1 && v.indexOf('.js.map') === -1).filter(v => require(`${dependDir}/${v}`));
+const dependDir = path.resolve(`${think.APP_PATH}${path.sep}common${path.sep}depend`);
+fs.readdirSync(dependDir).filter(v => require(`${dependDir}${path.sep}${v}`));
