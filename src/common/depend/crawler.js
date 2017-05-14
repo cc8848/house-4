@@ -7,8 +7,8 @@ const { rand } = requireCommon('random');
 const crawlerDir = `${think.APP_PATH}${path.sep}crawler${path.sep}service${path.sep}`;
 let crawlerlist = fs.readdirSync(crawlerDir);
 crawlerlist = crawlerlist.map((v) => {
-  v = v.replace('.js', '');
-  return v;
+  const js = v.replace('.js', '');
+  return js;
 });
 crawlerlist.filter((crawler) => {
   const CrawlerService = think.service(crawler, 'crawler');
