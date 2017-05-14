@@ -43,15 +43,19 @@
         "max": 3
       }
     ],
+    // 禁止变量有下划线
     "no-underscore-dangle": [
       "off"
     ],
+    // 不允许动态require
     "import/no-dynamic-require": [
       "off"
     ],
+    // require只能放在文件顶部
     "global-require": [
       "off"
     ],
+    // 类成员函数一定要用this，否则要定义为静态函数
     "class-methods-use-this": [
       "off"
     ]
