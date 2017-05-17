@@ -3,7 +3,7 @@
  * http://www1.fang.com/
  */
 const Base = requireBaseModel();
-class fang extends Base {
+module.exports = class extends Base {
   // 构造函数
   init(...args) {
     super.init(...args);
@@ -19,6 +19,4 @@ class fang extends Base {
     const row = await this._model.findOne({ name: 'ruanzhijun' });
     this.LOG.warn(`row: ${row}`);
   }
-}
-
-module.exports = fang;
+};

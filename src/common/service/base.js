@@ -1,6 +1,6 @@
 const path = require('path');
 
-class base extends think.service.base {
+module.exports = class extends think.service.base {
   // 最先执行
   init(...args) {
     super.init(...args);
@@ -18,6 +18,4 @@ class base extends think.service.base {
   crawler() {
     throw new Error(`please implement the method: ${this.LOG.category}.crawler()`);
   }
-}
-
-module.exports = base;
+};

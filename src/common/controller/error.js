@@ -1,4 +1,4 @@
-class error extends think.controller.base {
+module.exports = class extends think.controller.base {
   /**
    * display error page
    * @param  {Number} status []
@@ -76,6 +76,4 @@ class error extends think.controller.base {
   _503Action() {
     return this.displayError(503);
   }
-}
-
-module.exports = error;
+};

@@ -2,7 +2,7 @@ const Base = think.service('base', 'common');
 // const axios = require('axios');
 // const cheerio = require('cheerio');
 
-class fang extends Base {
+module.exports = class extends Base {
   // 最先执行
   init(...args) {
     super.init(...args);
@@ -19,5 +19,4 @@ class fang extends Base {
     const fang1 = this.model('fang');
     fang1.save({ xxx: 1, tttt: 43 });
   }
-}
-module.exports = fang;
+};

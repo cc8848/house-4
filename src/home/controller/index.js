@@ -1,5 +1,5 @@
 const Base = requireBaseController();
-class index extends Base {
+module.exports = class extends Base {
   init(...args) {
     super.init(...args);
     this.whiteList = ['index'];
@@ -8,5 +8,4 @@ class index extends Base {
   async indexAction() {
     return this.success('实业误国，炒楼兴邦');
   }
-}
-module.exports = index;
+};

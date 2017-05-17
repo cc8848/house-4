@@ -1,7 +1,6 @@
 const Base = requireBaseController();
-class index extends Base {
+module.exports = class extends Base {
   init(...args) {
     super.init(...args);
   }
-}
-module.exports = index;
+};

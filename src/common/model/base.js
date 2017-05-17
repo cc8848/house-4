@@ -3,7 +3,7 @@
  */
 const path = require('path');
 
-class base extends think.model.base {
+module.exports = class extends think.model.base {
   // 最先执行
   init(...args) {
     super.init(...args);
@@ -26,5 +26,4 @@ class base extends think.model.base {
       this.LOG.error(e);
     }
   }
-}
-module.exports = base;
+};

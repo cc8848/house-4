@@ -7,7 +7,7 @@ const locale = think.config('locale');
 const privateCert = fs.readFileSync(`${think.ROOT_PATH}/cert/private.pem`, 'utf-8');
 const publicCert = fs.readFileSync(`${think.ROOT_PATH}/cert/public.pem`, 'utf-8');
 
-class base extends think.controller.base {
+module.exports = class extends think.controller.base {
 
   init(...arg) {
     super.init(...arg);
@@ -147,6 +147,4 @@ class base extends think.controller.base {
     const i = toInteger(Math.floor(Math.log(size) / Math.log(1024)));
     return `${Math.floor(size / (1024 ** i))} ${sizes[i]}`;
   }
-}
-
-module.exports = base;
+};
