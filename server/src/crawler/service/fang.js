@@ -1,7 +1,7 @@
 const Base = think.service('base', 'common');
 const axios = require('axios');
-const cheerio = require('cheerio');
-const iconv = require('iconv-lite');
+// const cheerio = require('cheerio');
+// const iconv = require('iconv-lite');
 
 module.exports = class extends Base {
   // 最先执行
